@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 export default function App() {
+  const [lang, setLang] = useState('id'); // 'id' | 'en'
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('all');
   const [selectedDesign, setSelectedDesign] = useState(null);
@@ -16,71 +17,273 @@ export default function App() {
   const wordRef = useRef(null);
   const skyFrontRef = useRef(null);
 
+  // Kamus Bahasa (ID & EN)
+  const t = {
+    id: {
+      nav: {
+        home: 'Beranda',
+        work: 'Karya Desain',
+        about: 'Tentang',
+        process: 'Alur Kerja',
+        resume: 'CV & Pengalaman',
+        contact: 'Hubungi Saya',
+      },
+      hero: {
+        badge: 'Mahasiswa Bisnis Digital • Politeknik Caltex Riau',
+        h1_line1: 'Visual kreatif,',
+        h1_line2: 'strategi',
+        h1_em: 'digital.',
+        lede: 'Halo! Saya Muhammad Hafiz Ramadhan, mahasiswa Bisnis Digital PCR yang berfokus di bidang komunikasi visual, publikasi event, dan desain kreatif. Terampil merancang kebutuhan grafis media sosial, identitas logo, poster acara, serta pengembangan platform web pemasaran.',
+        btn_work: 'Lihat Hasil Desain',
+        btn_resume: 'Lihat CV & Pengalaman',
+        stat_events: 'Event & Kepanitiaan',
+        stat_gpa: 'IPK (Cumlaude)',
+        stat_dedication: 'Publikasi Kreatif',
+        card1_title: 'Desain Feed & Publikasi',
+        card1_desc: 'Konten media sosial interaktif, feed Instagram, dan infografis event kampus & kompetisi.',
+        card2_title: 'Desain Logo & Identitas',
+        card2_desc: 'Simbol kepanitiaan, identitas visual INNOBIZ, Series BEM, dan branding digital bisnis.',
+        card3_title: 'Desain Poster & Cetak',
+        card3_desc: 'Materi promosi cetak A2/A3, publikasi BK Fair tingkat provinsi, banner jalan santai PCR.',
+        card4_title: 'UI/UX & Web Bisnis',
+        card4_desc: 'Dasar pemrograman web, layout antarmuka pemasaran digital, dan riset pengguna.',
+        status: 'Terbuka untuk kolaborasi event, desain & freelance'
+      },
+      work: {
+        pill: 'Portofolio Desain',
+        title: 'Hasil Desain & Publikasi Pilihan',
+        subtitle: 'Karya desain grafis publikasi event tingkat kampus hingga provinsi, mencakup postingan media sosial, identitas logo kepanitiaan, serta poster cetak promosi.',
+        tab_all: 'Semua Karya',
+        tab_postingan: '📱 Desain Postingan',
+        tab_logo: '✨ Desain Logo',
+        tab_poster: '🖼️ Desain Poster',
+        view_detail: 'Lihat Detail Desain 🔍',
+        client_label: 'Kepanitiaan / Acara:',
+        consult_btn: 'Hubungi Hafiz untuk Kebutuhan Desain →'
+      },
+      about: {
+        pill: 'Profil Singkat',
+        sticker1: 'HAFIZ 🎓',
+        sticker2: 'BISNIS DIGITAL PCR',
+        role: 'Publikasi, Dokumentasi & Visual Designer',
+        loc_label: 'Lokasi:',
+        loc_val: 'Pekanbaru, Riau (Politeknik Caltex Riau)',
+        title: 'Komunikasi Visual & Pemasaran Digital',
+        p1: 'Saya adalah mahasiswa aktif D4 Bisnis Digital di Politeknik Caltex Riau (PCR) dengan Indeks Prestasi Kumulatif 3.59 (Cumlaude). Memiliki minat tinggi di bidang komunikasi visual, publikasi media, serta teknologi digital.',
+        p2: 'Berpengalaman aktif sebagai staf publikasi & dokumentasi di berbagai kepanitiaan event tingkat Program Studi, Kampus PCR, hingga tingkat Provinsi. Terampil mengoperasikan tools desain grafis, editing foto & video, serta memiliki fondasi dalam pengembangan platform web pemasaran modern.',
+        val1_title: 'Publikasi & Dokumentasi Event',
+        val1_desc: 'Berpengalaman di 8+ kepanitiaan besar (BK Fair Provinsi, Edufestia 25th PCR, Funwalk, Innobiz, dll).',
+        val2_title: 'UI/UX & Desain Grafis',
+        val2_desc: 'Menguasai prinsip desain antarmuka pengguna, tipografi, grid system, dan visual branding yang terarah.',
+        val3_title: 'Video & Photo Editing',
+        val3_desc: 'Mendokumentasikan momen penting acara, video promosi PCR Goes to School (GTS), serta reels medsos.',
+        val4_title: 'Pemasaran & Web Basics',
+        val4_desc: 'Mengkombinasikan pemahaman bisnis digital, manajemen pemasaran, dan dasar pemrograman web.'
+      },
+      process: {
+        pill: 'Alur Kerja',
+        title: 'Bagaimana Desain & Publikasi Dipersiapkan',
+        subtitle: 'Pendekatan kerja sistematis dari riset kebutuhan kepanitiaan hingga distribusi konten visual siap tayang.',
+        steps: [
+          { step: '01', title: 'Brief & Riset Audiens Acara', desc: 'Memahami tujuan kepanitiaan/klien, target sasaran (mahasiswa, siswa, atau publik), serta menyusun moodboard visual yang relevan.', tag: 'Discovery' },
+          { step: '02', title: 'Eksplorasi Konsep & Layout Sketsa', desc: 'Mengembangkan beberapa alternatif tata letak poster, visual feed medsos, atau sketsa logo dengan hierarki informasi yang terarah.', tag: 'Ideation' },
+          { step: '03', title: 'Eksekusi Vektor & Detail Visual', desc: 'Mengolah desain presisi di Figma dan Adobe Illustrator, mematangkan tipografi, warna, rasio aspek, dan aset editing foto/video.', tag: 'Production' },
+          { step: '04', title: 'Publikasi & Handover Siap Pakai', desc: 'Menyiapkan file siap cetak resolusi tinggi (A2/A3/Banner) dan format optimal digital (Story, Feed Carousel, Thumbnail medsos).', tag: 'Delivery' }
+        ]
+      },
+      resume: {
+        pill_exp: 'Riwayat Kepanitiaan',
+        title_exp: 'Pengalaman Publikasi & Dokumentasi',
+        pill_edu: 'Latar Belakang Akademik',
+        title_edu: 'Pendidikan & Transkrip',
+        gpa_label: 'Indeks Prestasi Kumulatif:',
+        pill_skill: 'Kemampuan & Keahlian',
+        title_skill: 'Skills & Kompetensi',
+        lang_skill: 'Kemampuan Bahasa: Indonesia (Native) & English (Medium)',
+        active_badge: 'Aktif',
+        cta_title: 'Mari Berkolaborasi!',
+        cta_desc: 'Butuh desain postingan promosi, kebutuhan publikasi event, logo acara, atau poster berkualitas?',
+        btn_email: 'Kirim Email Langsung →',
+        btn_wa: 'WhatsApp: +62 878-1216-3800'
+      },
+      footer: {
+        desc: 'Muhammad Hafiz Ramadhan • Mahasiswa Bisnis Digital Politeknik Caltex Riau. Menggabungkan estetika visual, publikasi event, dan strategi pemasaran digital.',
+        copy: `© ${new Date().getFullYear()} Muhammad Hafiz Ramadhan. Dibuat dengan bangga.`
+      }
+    },
+    en: {
+      nav: {
+        home: 'Home',
+        work: 'Design Work',
+        about: 'About',
+        process: 'Workflow',
+        resume: 'CV & Experience',
+        contact: 'Get in Touch',
+      },
+      hero: {
+        badge: 'Digital Business Student • Politeknik Caltex Riau',
+        h1_line1: 'Creative visuals,',
+        h1_line2: 'digital',
+        h1_em: 'strategies.',
+        lede: 'Hello! I am Muhammad Hafiz Ramadhan, a Digital Business student at PCR focusing on visual communication, event publication, and creative design. Skilled in crafting social media graphics, brand logos, event posters, and marketing web platforms.',
+        btn_work: 'View Design Work',
+        btn_resume: 'View CV & Experience',
+        stat_events: 'Events & Committees',
+        stat_gpa: 'GPA (Cum Laude)',
+        stat_dedication: 'Creative Publication',
+        card1_title: 'Social Media & Publication',
+        card1_desc: 'Engaging social media feeds, Instagram carousels, and infographics for campus events and competitions.',
+        card2_title: 'Logo & Brand Identity',
+        card2_desc: 'Event symbols, INNOBIZ visual identity, BEM Series emblem, and modern digital business branding.',
+        card3_title: 'Poster & Print Design',
+        card3_desc: 'A2/A3 print materials, provincial-level BK Fair posters, and commemorative PCR funwalk banners.',
+        card4_title: 'UI/UX & Business Web',
+        card4_desc: 'Core web development fundamentals, digital marketing UI design, and user journey research.',
+        status: 'Open for event collaboration, design & freelance'
+      },
+      work: {
+        pill: 'Design Portfolio',
+        title: 'Selected Designs & Event Publications',
+        subtitle: 'Graphic design works for campus and provincial-level event publications, including social media feeds, event logos, and promotional print posters.',
+        tab_all: 'All Works',
+        tab_postingan: '📱 Social Media Feeds',
+        tab_logo: '✨ Logo Design',
+        tab_poster: '🖼️ Poster Design',
+        view_detail: 'View Design Details 🔍',
+        client_label: 'Committee / Event:',
+        consult_btn: 'Contact Hafiz for Design Inquiries →'
+      },
+      about: {
+        pill: 'About Me',
+        sticker1: 'HAFIZ 🎓',
+        sticker2: 'PCR DIGITAL BUSINESS',
+        role: 'Publication, Documentation & Visual Designer',
+        loc_label: 'Location:',
+        loc_val: 'Pekanbaru, Riau, Indonesia (Politeknik Caltex Riau)',
+        title: 'Visual Communication & Digital Marketing',
+        p1: 'I am an active student in Bachelor of Applied Digital Business at Politeknik Caltex Riau (PCR) with a Cumulative GPA of 3.59 (Cum Laude). Passionate about visual storytelling, media publication, and digital technology.',
+        p2: 'Active as publication & documentation staff across multiple event committees from study program and campus levels to provincial scale. Proficient in graphic design suites, photo & video editing, and modern web marketing foundations.',
+        val1_title: 'Event Publication & Documentation',
+        val1_desc: 'Experienced in 8+ major committees (Provincial BK Fair, PCR 25th Edufestia, Funwalk, Innobiz, etc).',
+        val2_title: 'UI/UX & Graphic Design',
+        val2_desc: 'Mastering user interface design principles, typography, grid hierarchy, and purposeful visual branding.',
+        val3_title: 'Video & Photo Editing',
+        val3_desc: 'Capturing event highlights, promotional videos for PCR Goes to School (GTS), and social media reels.',
+        val4_title: 'Marketing & Web Fundamentals',
+        val4_desc: 'Merging business acumen, marketing management insights, and hands-on web coding skills.'
+      },
+      process: {
+        pill: 'Methodology',
+        title: 'How Design & Publication Are Crafted',
+        subtitle: 'A structured workflow from initial committee briefing to delivering production-ready assets.',
+        steps: [
+          { step: '01', title: 'Briefing & Audience Discovery', desc: 'Understanding goals, target demographics (students or public), and curating relevant aesthetic moodboards.', tag: 'Discovery' },
+          { step: '02', title: 'Concept Ideation & Sketches', desc: 'Developing layout alternatives, feed grids, or logo sketches with clear visual hierarchy.', tag: 'Ideation' },
+          { step: '03', title: 'Vector Execution & Visual Details', desc: 'Fine-tuning vectors in Figma and Illustrator, refining typography, colors, and media editing.', tag: 'Production' },
+          { step: '04', title: 'Publication & Handover', desc: 'Delivering high-resolution print files (A2/A3/Banners) and optimized digital assets (Feeds, Stories).', tag: 'Delivery' }
+        ]
+      },
+      resume: {
+        pill_exp: 'Committee History',
+        title_exp: 'Publication & Documentation Experience',
+        pill_edu: 'Academic Background',
+        title_edu: 'Education & Transcript',
+        gpa_label: 'Cumulative GPA:',
+        pill_skill: 'Skills & Toolkit',
+        title_skill: 'Core Competencies',
+        lang_skill: 'Languages: Indonesian (Native) & English (Medium)',
+        active_badge: 'Active',
+        cta_title: "Let's Collaborate!",
+        cta_desc: 'Need engaging promotional posts, event publication assets, a distinctive logo, or high-impact posters?',
+        btn_email: 'Send Direct Email →',
+        btn_wa: 'WhatsApp: +62 878-1216-3800'
+      },
+      footer: {
+        desc: 'Muhammad Hafiz Ramadhan • Digital Business Student at Politeknik Caltex Riau. Blending visual aesthetics, event publication, and digital marketing strategy.',
+        copy: `© ${new Date().getFullYear()} Muhammad Hafiz Ramadhan. Crafted with pride.`
+      }
+    }
+  };
+
+  const cur = t[lang];
+
   // Data Karya Desain Berdasarkan Event & Pengalaman Nyata Hafiz
   const designProjects = [
     {
       id: 1,
       category: 'postingan',
-      title: 'Kampanye Media Sosial Edufestia 25 Tahun PCR',
+      title: lang === 'id' ? 'Kampanye Media Sosial Edufestia 25 Tahun PCR' : 'Edufestia 25th Anniversary Social Media Campaign',
       client: 'Edufestia Road to 25 Tahun Politeknik Caltex Riau',
-      tag: 'Instagram Feed & Carousel',
+      tag: lang === 'id' ? 'Instagram Feed & Carousel' : 'Instagram Feed & Carousel',
       color: '#f47b20',
-      desc: 'Perancangan desain feed Instagram interaktif dan carousel informatif perayaan seperempat abad Politeknik Caltex Riau, memadukan elemen modern kampus dan daya tarik visual bagi mahasiswa.',
-      tags: ['Publikasi & Dokumentasi', 'Instagram Carousel', 'Event Kampus PCR'],
+      desc: lang === 'id' 
+        ? 'Perancangan desain feed Instagram interaktif dan carousel informatif perayaan seperempat abad Politeknik Caltex Riau, memadukan elemen modern kampus dan daya tarik visual bagi mahasiswa.'
+        : 'Designing interactive Instagram feeds and informative carousels celebrating the silver jubilee of Politeknik Caltex Riau, combining modern campus identity with engaging student visuals.',
+      tags: lang === 'id' ? ['Publikasi & Dokumentasi', 'Instagram Carousel', 'Event Kampus PCR'] : ['Publication & Media', 'Instagram Carousel', 'PCR Campus Event'],
       previewType: 'postingan-1'
     },
     {
       id: 2,
       category: 'logo',
-      title: 'Identitas Visual & Branding Lomba INNOBIZ',
+      title: lang === 'id' ? 'Identitas Visual & Branding Lomba INNOBIZ' : 'Visual Identity & Branding for INNOBIZ Competition',
       client: 'INNOBIZ (Inovasi Bisnis Mahasiswa & Siswa)',
       tag: 'Brand Identity & Logo Suite',
       color: '#d4f56a',
-      desc: 'Konsep identitas visual dan logo modern untuk ajang kompetisi ide bisnis kreatif antar siswa dan mahasiswa, memancarkan semangat inovasi, teknologi, dan kewirausahaan muda.',
+      desc: lang === 'id'
+        ? 'Konsep identitas visual dan logo modern untuk ajang kompetisi ide bisnis kreatif antar siswa dan mahasiswa, memancarkan semangat inovasi, teknologi, dan kewirausahaan muda.'
+        : 'Modern visual branding and logo suite for youth business innovation competition, capturing the spirit of technology and student entrepreneurship.',
       tags: ['Logo Design', 'Visual Identity', 'Digital Business'],
       previewType: 'logo-1'
     },
     {
       id: 3,
       category: 'poster',
-      title: 'Poster Publikasi BK Fair Tingkat Provinsi',
+      title: lang === 'id' ? 'Poster Publikasi BK Fair Tingkat Provinsi' : 'Provincial-Level BK Fair Promotional Poster',
       client: 'BK Fair Tingkat Propinsi Riau',
       tag: 'Event & Print Poster',
       color: '#a8e4ef',
-      desc: 'Desain poster promosi resmi skala provinsi dengan tata letak dinamis, pemilihan tipografi hierarkis yang tegas, dan kesiapan cetak resolusi tinggi untuk publikasi luas.',
-      tags: ['Poster A2', 'Tingkat Provinsi', 'Print Ready', 'Publikasi Acara'],
+      desc: lang === 'id'
+        ? 'Desain poster promosi resmi skala provinsi dengan tata letak dinamis, pemilihan tipografi hierarkis yang tegas, dan kesiapan cetak resolusi tinggi untuk publikasi luas.'
+        : 'Official promotional poster design for provincial-scale events featuring dynamic layout, bold typographic hierarchy, and print-ready high resolution.',
+      tags: lang === 'id' ? ['Poster A2', 'Tingkat Provinsi', 'Print Ready', 'Publikasi Acara'] : ['A2 Poster', 'Provincial Event', 'Print Ready', 'Event Media'],
       previewType: 'poster-1'
     },
     {
       id: 4,
       category: 'postingan',
-      title: 'Seri Konten Media Sosial & Reels Funwalk Road to 25th PCR',
+      title: lang === 'id' ? 'Seri Konten Media Sosial & Reels Funwalk Road to 25th PCR' : 'Social Media Content & Reels for Funwalk Road to 25th PCR',
       client: 'Funwalk 25 Tahun Politeknik Caltex Riau',
       tag: 'Social Media Content',
       color: '#ff8fb1',
-      desc: 'Rangkaian postingan jadwal rute, countdown acara, dan infografis merchandise resmi jalan santai akbar yang meningkatkan partisipasi civitas akademika.',
+      desc: lang === 'id'
+        ? 'Rangkaian postingan jadwal rute, countdown acara, dan infografis merchandise resmi jalan santai akbar yang meningkatkan partisipasi civitas akademika.'
+        : 'Series of route schedules, event countdown posts, and official merchandise infographics driving campus participation.',
       tags: ['Social Media Design', 'Countdown Feed', 'PCR Event'],
       previewType: 'postingan-2'
     },
     {
       id: 5,
       category: 'logo',
-      title: 'Lambang & Monogram Kemahasiswaan SERIES BEM/BLM',
+      title: lang === 'id' ? 'Lambang & Monogram Kemahasiswaan SERIES BEM/BLM' : 'Student Association Emblem & Monogram for SERIES BEM/BLM',
       client: 'Series Event BEM / BLM Kemahasiswaan',
       tag: 'Monogram & Event Emblem',
       color: '#a8e4ef',
-      desc: 'Desain emblem logo dan grafis panggung bertema kepemimpinan mahasiswa dengan aksen garis presisi dan harmoni palet warna formal-kontemporer.',
+      desc: lang === 'id'
+        ? 'Desain emblem logo dan grafis panggung bertema kepemimpinan mahasiswa dengan aksen garis presisi dan harmoni palet warna formal-kontemporer.'
+        : 'Student leadership emblem and stage backdrop graphics with clean vector lines and contemporary formal colors.',
       tags: ['Event Logo', 'Organisasi Mahasiswa', 'BEM/BLM'],
       previewType: 'logo-2'
     },
     {
       id: 6,
       category: 'poster',
-      title: 'Poster Promosi Kampus PCR Goes To School (GTS)',
+      title: lang === 'id' ? 'Poster Promosi Kampus PCR Goes To School (GTS)' : 'PCR Goes To School (GTS) Campus Outreach Poster',
       client: 'PCR GTS (Goes To School)',
       tag: 'Promotional Poster',
       color: '#f47b20',
-      desc: 'Poster edukasi dan promosi program studi unggulan Politeknik Caltex Riau yang disebarkan ke berbagai SMA/SMK sederajat untuk menjaring calon mahasiswa baru.',
+      desc: lang === 'id'
+        ? 'Poster edukasi dan promosi program studi unggulan Politeknik Caltex Riau yang disebarkan ke berbagai SMA/SMK sederajat untuk menjaring calon mahasiswa baru.'
+        : 'Educational and promotional poster introducing PCR study programs distributed across high schools for student recruitment.',
       tags: ['Poster Edukasi', 'Branding Kampus', 'Goes To School'],
       previewType: 'poster-2'
     }
@@ -90,93 +293,83 @@ export default function App() {
     ? designProjects 
     : designProjects.filter(p => p.category === activeTab);
 
-  // Proses kerja Hafiz
-  const workflowSteps = [
-    {
-      step: '01',
-      title: 'Brief & Riset Audiens Acara',
-      desc: 'Memahami tujuan kepanitiaan/klien, target sasaran (mahasiswa, siswa, atau publik), serta menyusun moodboard visual yang relevan.',
-      tag: 'Discovery'
-    },
-    {
-      step: '02',
-      title: 'Eksplorasi Konsep & Layout Sketsa',
-      desc: 'Mengembangkan beberapa alternatif tata letak poster, visual feed medsos, atau sketsa logo dengan hierarki informasi yang terarah.',
-      tag: 'Ideation'
-    },
-    {
-      step: '03',
-      title: 'Eksekusi Vektor & Detail Visual',
-      desc: 'Mengolah desain presisi di Figma dan Adobe Illustrator, mematangkan tipografi, warna, rasio aspek, dan aset editing foto/video.',
-      tag: 'Production'
-    },
-    {
-      step: '04',
-      title: 'Publikasi & Handover Siap Pakai',
-      desc: 'Menyiapkan file siap cetak resolusi tinggi (A2/A3/Banner) dan format optimal digital (Story, Feed Carousel, Thumbnail medsos).',
-      tag: 'Delivery'
-    }
-  ];
-
-  // Riwayat Pengalaman Kepanitiaan & Publikasi Dokumentasi (Sesuai CV)
+  // Riwayat Pengalaman Kepanitiaan (Sesuai CV)
   const experienceData = [
     {
-      role: 'Anggota Divisi Publikasi',
+      role: lang === 'id' ? 'Anggota Divisi Publikasi' : 'Publication Division Member',
       place: 'Innobiz 2026',
       period: '2026',
-      desc: 'Berperan aktif sebagai panitia dalam event lomba inovasi bisnis antar siswa dan mahasiswa, memproduksi seluruh konten media sosial promosi.'
+      desc: lang === 'id'
+        ? 'Berperan aktif sebagai panitia dalam event lomba inovasi bisnis antar siswa dan mahasiswa, memproduksi seluruh konten media sosial promosi.'
+        : 'Active committee member in business innovation contest for students, producing all promotional social media content.'
     },
     {
-      role: 'Anggota Divisi Dokumentasi',
+      role: lang === 'id' ? 'Anggota Divisi Dokumentasi' : 'Documentation Division Member',
       place: 'Mubes Hima 2026',
       period: '2026',
-      desc: 'Berperan aktif sebagai panitia kegiatan tingkat Program Studi Bisnis Digital, mendokumentasikan jalannya musyawarah besar secara menyeluruh.'
+      desc: lang === 'id'
+        ? 'Berperan aktif sebagai panitia kegiatan tingkat Program Studi Bisnis Digital, mendokumentasikan jalannya musyawarah besar secara menyeluruh.'
+        : 'Active committee member for Digital Business student association general assembly, thoroughly documenting proceedings.'
     },
     {
-      role: 'Anggota Divisi Dokumentasi',
+      role: lang === 'id' ? 'Anggota Divisi Dokumentasi' : 'Documentation Division Member',
       place: 'Series 2025 (BEM / BLM)',
       period: '2025',
-      desc: 'Berperan aktif dalam event kemahasiswaan tingkat BEM/BLM, mendokumentasikan acara dan memproduksi segala kebutuhan desain publikasi.'
+      desc: lang === 'id'
+        ? 'Berperan aktif dalam event kemahasiswaan tingkat BEM/BLM, mendokumentasikan acara dan memproduksi segala kebutuhan desain publikasi.'
+        : 'Active in BEM/BLM student event, documenting proceedings and creating all promotional design collateral.'
     },
     {
-      role: 'Anggota Divisi Dokumentasi & Publikasi',
+      role: lang === 'id' ? 'Anggota Divisi Dokumentasi & Publikasi' : 'Documentation & Publication Division Member',
       place: 'Edufestia Road to 25 Tahun Politeknik Caltex Riau',
       period: '2025',
-      desc: 'Panitia perayaan tingkat PCR, bertanggung jawab penuh atas dokumentasi acara, pembuatan materi desain grafis, dan konten media sosial.'
+      desc: lang === 'id'
+        ? 'Panitia perayaan tingkat PCR, bertanggung jawab penuh atas dokumentasi acara, pembuatan materi desain grafis, dan konten media sosial.'
+        : 'PCR campus-wide celebration committee, overseeing event documentation, graphic design collateral, and social media feeds.'
     },
     {
-      role: 'Anggota Divisi Dokumentasi & Publikasi',
+      role: lang === 'id' ? 'Anggota Divisi Dokumentasi & Publikasi' : 'Documentation & Publication Division Member',
       place: 'Funwalk Road to 25 Tahun Politeknik Caltex Riau',
       period: '2025',
-      desc: 'Mendokumentasikan seluruh rangkaian acara jalan santai, merancang materi visual grafis, banner, dan feed media sosial.'
+      desc: lang === 'id'
+        ? 'Mendokumentasikan seluruh rangkaian acara jalan santai, merancang materi visual grafis, banner, dan feed media sosial.'
+        : 'Documented university anniversary funwalk, designed graphic materials, banners, and promotional feeds.'
     },
     {
-      role: 'Anggota Divisi Dokumentasi',
+      role: lang === 'id' ? 'Anggota Divisi Dokumentasi' : 'Documentation Division Member',
       place: 'BK Fair Tingkat Propinsi',
       period: '2025',
-      desc: 'Panitia event skala provinsi, bertugas mendokumentasikan kegiatan serta merancang segala kebutuhan desain promosi dan publikasi.'
+      desc: lang === 'id'
+        ? 'Panitia event skala provinsi, bertugas mendokumentasikan kegiatan serta merancang segala kebutuhan desain promosi dan publikasi.'
+        : 'Provincial-scale event committee, in charge of photo/video documentation and promotional design publication.'
     },
     {
-      role: 'Anggota Divisi Dokumentasi',
+      role: lang === 'id' ? 'Anggota Divisi Dokumentasi' : 'Documentation Division Member',
       place: 'PCR GTS (Goes To School)',
       period: '2025',
-      desc: 'Mempromosikan Politeknik Caltex Riau ke sekolah-sekolah melalui video editing, desain media edukasi, dan dokumentasi lapangan.'
+      desc: lang === 'id'
+        ? 'Mempromosikan Politeknik Caltex Riau ke sekolah-sekolah melalui video editing, desain media edukasi, dan dokumentasi lapangan.'
+        : 'Promoting PCR to high schools through video editing, educational design materials, and on-site documentation.'
     },
     {
-      role: 'Anggota Divisi Dokumentasi & Publikasi',
+      role: lang === 'id' ? 'Anggota Divisi Dokumentasi & Publikasi' : 'Documentation & Publication Division Member',
       place: 'Innobiz 2025',
       period: '2025',
-      desc: 'Mendokumentasikan acara, membuat konten grafis media sosial, dan materi publikasi kepanitiaan tingkat kampus.'
+      desc: lang === 'id'
+        ? 'Mendokumentasikan acara, membuat konten grafis media sosial, dan materi publikasi kepanitiaan tingkat kampus.'
+        : 'Documenting the event, creating social media graphics, and managing campus publication materials.'
     }
   ];
 
   // Pendidikan (Sesuai CV)
   const educationData = {
     institution: 'Politeknik Caltex Riau',
-    major: 'D4 Bisnis Digital',
+    major: lang === 'id' ? 'D4 Bisnis Digital' : 'Bachelor of Applied Digital Business',
     period: '2024 — 2028',
-    gpa: '3.59 (Cumlaude)',
-    highlights: ['Desain UI/UX (Nilai AB)', 'Pemrograman Web (Nilai A)', 'Management Pemasaran (Nilai A)', 'Kreativitas & Bisnis Digital']
+    gpa: '3.59 (Cum Laude)',
+    highlights: lang === 'id' 
+      ? ['Desain UI/UX (Nilai AB)', 'Pemrograman Web (Nilai A)', 'Management Pemasaran (Nilai A)', 'Kreativitas & Bisnis Digital']
+      : ['UI/UX Design (Grade AB)', 'Web Programming (Grade A)', 'Marketing Management (Grade A)', 'Digital Business & Creativity']
   };
 
   useEffect(() => {
@@ -204,11 +397,16 @@ export default function App() {
     const SERIF = "Instrument Serif, Georgia, serif";
     const SANS = "Satoshi, system-ui, sans-serif";
 
-    const CHAPTERS = [
+    const CHAPTERS = lang === 'id' ? [
       {title: "Publikasi Medsos", icon: "card", img: C.sky, greet: "Halo, Hafiz!", rows: [C.orange, C.sky, C.white], cta: "Lihat Konten", dash: "Engagement", bars: [22, 40, 30, 52, 36, 46], flow: ["Riset Konten", "Visual Feed", "Publikasi"] },
       {title: "Branding & Logo", icon: "bowl", img: C.lime, greet: "Ide Kreatif", rows: [C.lime, C.orange, C.white], cta: "Lihat Logo", dash: "Karakter", bars: [30, 26, 44, 38, 54, 48], flow: ["Filosofi", "Vektor", "Brand Aset"] },
       {title: "Poster Event PCR", icon: "heart", img: C.white, greet: "BK Fair 2025", rows: [C.sky, C.lime, C.orange], cta: "Cetak Poster", dash: "Audiens", bars: [18, 34, 50, 28, 44, 56], flow: ["Brief Acara", "Tipografi", "Cetak A2"] },
       {title: "Web & UI/UX Digital", icon: "plane", img: C.orange, greet: "Bisnis Digital", rows: [C.white, C.sky, C.lime], cta: "Jelajahi", dash: "Konversi Web", bars: [40, 24, 36, 50, 30, 42], flow: ["Wireframe", "Desain UI", "Deploy Web"] }
+    ] : [
+      {title: "Social Media", icon: "card", img: C.sky, greet: "Hi, Hafiz!", rows: [C.orange, C.sky, C.white], cta: "View Media", dash: "Engagement", bars: [22, 40, 30, 52, 36, 46], flow: ["Research", "Feed Design", "Publish"] },
+      {title: "Branding & Logo", icon: "bowl", img: C.lime, greet: "Creative", rows: [C.lime, C.orange, C.white], cta: "View Logo", dash: "Identity", bars: [30, 26, 44, 38, 54, 48], flow: ["Concept", "Vector", "Brand Book"] },
+      {title: "Event Posters", icon: "heart", img: C.white, greet: "BK Fair 2025", rows: [C.sky, C.lime, C.orange], cta: "Print Ready", dash: "Audience", bars: [18, 34, 50, 28, 44, 56], flow: ["Briefing", "Typography", "A2 Print"] },
+      {title: "Web & UI/UX", icon: "plane", img: C.orange, greet: "Digital Biz", rows: [C.white, C.sky, C.lime], cta: "Explore UI", dash: "Conversion", bars: [40, 24, 36, 50, 30, 42], flow: ["Wireframe", "Visual UI", "Ship Web"] }
     ];
 
     // Bersihkan isi ref
@@ -314,13 +512,13 @@ export default function App() {
       // 1. Card
       let p = slotCard;
       el("rect", {x: -62, y: -170, width: 124, height: 168, rx: 10, fill: C.white, stroke: C.ink, "stroke-width": 2.4 }, p);
-      txt(p, `KARYA 0${n + 1}`, {x: -50, y: -150, "font-family": SANS, "font-weight": 700, "font-size": 9, "letter-spacing": 1.4, fill: C.orange });
+      txt(p, lang === 'id' ? `KARYA 0${n + 1}` : `WORK 0${n + 1}`, {x: -50, y: -150, "font-family": SANS, "font-weight": 700, "font-size": 9, "letter-spacing": 1.4, fill: C.orange });
       txt(p, ch.title, {x: -50, y: -128, "font-family": SERIF, "font-size": 17, fill: C.ink });
       el("rect", {x: -50, y: -118, width: 100, height: 60, rx: 6, fill: ch.img, stroke: C.ink, "stroke-width": 1.8 }, p);
       icon(p, ch.icon);
       [-46, -37, -28].forEach((y, k) => el("rect", {x: -50, y, width: k === 2 ? 60 : 100, height: 4, rx: 2, fill: C.ink, opacity: .4 }, p));
       el("rect", {x: -50, y: -18, width: 62, height: 12, rx: 6, fill: C.ink }, p);
-      txt(p, "Detail →", {x: -19, y: -9, "text-anchor": "middle", "font-family": SANS, "font-weight": 700, "font-size": 7.5, fill: C.lime });
+      txt(p, lang === 'id' ? "Detail →" : "Read →", {x: -19, y: -9, "text-anchor": "middle", "font-family": SANS, "font-weight": 700, "font-size": 7.5, fill: C.lime });
 
       // 2. Phone
       p = slotPhone;
@@ -360,24 +558,26 @@ export default function App() {
         if (k < 2) el("path", {d: `M${x + 48} -19 h16 m-6 -5 l6 5 l-6 5`, fill: "none", stroke: C.ink, "stroke-width": 2.2, "stroke-linecap": "round", "stroke-linejoin": "round" }, p);
       });
 
-      if (chapterLabel) chapterLabel.textContent = `BAB 0${n + 1}/0${CHAPTERS.length}: ${ch.title.toUpperCase()}`;
+      if (chapterLabel) chapterLabel.textContent = lang === 'id' ? `BAB 0${n + 1}/0${CHAPTERS.length}: ${ch.title.toUpperCase()}` : `CHAPTER 0${n + 1}/0${CHAPTERS.length}: ${ch.title.toUpperCase()}`;
     }
 
     // Tulisan PORTOFOLIO pop-up
     const ADV = 62;
-    [..."PORTOFOLIO"].forEach((ch, i) => {
-      const x = 300 + (i - 5) * ADV + 31;
+    const wordText = lang === 'id' ? "PORTOFOLIO" : "PORTFOLIO";
+    const letterCount = wordText.length;
+    [...wordText].forEach((ch, i) => {
+      const x = 300 + (i - Math.floor(letterCount / 2)) * ADV + (letterCount % 2 === 0 ? 31 : 0);
       const outer = el("g", {filter: "url(#paperDeep)" }, wordRef.current);
       const p = el("g", { class: "pop", style: `--pd:${(1.5 + i * .05).toFixed(2)}s` }, outer);
       const b = el("g", { class: "bob", style: `--dl:${(-i * .3).toFixed(2)}s; --rot:${i % 2 ? 1 : -1}deg` }, p);
       el("path", {d: `M${x - 11} 700 L${x + 11} 700 L${x + 15} 724 L${x - 15} 724 Z`, fill: C.edge, stroke: C.ink, "stroke-width": 1.8, "stroke-linejoin": "round" }, b);
-      txt(b, ch, { x, y: 704, "text-anchor": "middle", "font-family": "Bowlby One, Impact, sans-serif", "font-size": 64, fill: (i === 3 || i === 7) ? C.orange : C.white, stroke: C.ink, "stroke-width": 2.6, "stroke-linejoin": "round", "paint-order": "stroke", transform: `rotate(${[-3, 2, -2, 3, -2, 2, -3, 2, -2, 1][i]} ${x} 680)` });
+      txt(b, ch, { x, y: 704, "text-anchor": "middle", "font-family": "Bowlby One, Impact, sans-serif", "font-size": 64, fill: (i === 3 || i === 7) ? C.orange : C.white, stroke: C.ink, "stroke-width": 2.6, "stroke-linejoin": "round", "paint-order": "stroke", transform: `rotate(${[-3, 2, -2, 3, -2, 2, -3, 2, -2, 1, -1][i % 11]} ${x} 680)` });
     });
 
     const coverFlip = el("g", { class: "coverFlip", filter: "url(#paperDeep)" }, wordRef.current);
     el("path", { d: "M300 650 Q 412 628 526 646 L524 762 Q 410 746 300 764 Z", fill: C.orange, stroke: C.ink, "stroke-width": 2.6, "stroke-linejoin": "round" }, coverFlip);
     el("path", { d: "M318 662 Q 412 644 508 658 L506 748 Q 410 734 318 750 Z", fill: "none", stroke: C.ink, "stroke-width": 1.4, opacity: .5 }, coverFlip);
-    txt(coverFlip, "Karya Desain", {x: 412, y: 698, "text-anchor": "middle", "font-family": SERIF, "font-style": "italic", "font-size": 30, fill: C.ink, transform: "rotate(-3 412 698)" });
+    txt(coverFlip, lang === 'id' ? "Karya Desain" : "Design Works", {x: 412, y: 698, "text-anchor": "middle", "font-family": SERIF, "font-style": "italic", "font-size": 30, fill: C.ink, transform: "rotate(-3 412 698)" });
     txt(coverFlip, "HAFIZ VOL. 01", {x: 412, y: 722, "text-anchor": "middle", "font-family": SANS, "font-weight": 700, "font-size": 9, "letter-spacing": 2, fill: C.ink, transform: "rotate(-3 412 722)" });
 
     const labelG = el("g", { class: "chapter", filter: "url(#paper)" }, wordRef.current);
@@ -387,7 +587,7 @@ export default function App() {
     cloud(skyFrontRef.current, 480, 800, 1.05, 15, -12);
     cloud(skyFrontRef.current, 70, 812, 1.15, 18, 14);
     cloud(skyFrontRef.current, 280, 848, .95, 12, 10);
-    txt(skyFrontRef.current, "KLIK BUKU UNTUK MEMBUKA HALAMAN", {x: 300, y: 890, "text-anchor": "middle", "font-family": SANS, "font-weight": 700, "font-size": 11, "letter-spacing": 2, fill: C.ink });
+    txt(skyFrontRef.current, lang === 'id' ? "KLIK BUKU UNTUK MEMBUKA HALAMAN" : "CLICK THE BOOK TO TURN THE PAGE", {x: 300, y: 890, "text-anchor": "middle", "font-family": SANS, "font-weight": 700, "font-size": 11, "letter-spacing": 2, fill: C.ink });
 
     let chapter = 0;
     let busy = false;
@@ -486,7 +686,7 @@ export default function App() {
       sceneRef.current?.removeEventListener("click", handleSceneClick);
       window.removeEventListener("pointermove", handlePointerMove);
     };
-  }, []);
+  }, [lang]);
 
   // Helper render mockup grafis interaktif
   const renderDesignPreview = (previewType) => {
@@ -500,12 +700,12 @@ export default function App() {
                 <strong>@politeknikcaltexriau</strong>
                 <small>Edufestia • Road to 25th</small>
               </div>
-              <span className="art-badge-tag">25 Tahun</span>
+              <span className="art-badge-tag">{lang === 'id' ? '25 Tahun' : '25th Year'}</span>
             </div>
             <div className="art-post-body gradient-warm">
               <div className="art-floating-circle c1"></div>
               <div className="art-floating-circle c2"></div>
-              <p className="art-headline-text">EDUFESTIA 2025<br /><em>SELEBRASI 25 TAHUN</em></p>
+              <p className="art-headline-text">EDUFESTIA 2025<br /><em>{lang === 'id' ? 'SELEBRASI 25 TAHUN' : '25TH CELEBRATION'}</em></p>
               <div className="art-cup-mockup" style={{ fontSize: '32px' }}>
                 🎉🎓
               </div>
@@ -541,7 +741,7 @@ export default function App() {
           <div className="art-preview art-poster">
             <div className="poster-inner">
               <div className="poster-top-bar">
-                <span>KEGIATAN TINGKAT PROPINSI</span>
+                <span>{lang === 'id' ? 'KEGIATAN TINGKAT PROPINSI' : 'PROVINCIAL SCALE EVENT'}</span>
                 <span>TAHUN 2025</span>
               </div>
               <div className="poster-center-art">
@@ -566,18 +766,18 @@ export default function App() {
               <span className="art-avatar" style={{ background: '#ff8fb1' }}>F</span>
               <div className="art-post-meta">
                 <strong>@funwalk.pcr25</strong>
-                <small>Kepanitiaan Publikasi</small>
+                <small>{lang === 'id' ? 'Kepanitiaan Publikasi' : 'Publication Media'}</small>
               </div>
               <span className="art-badge-tag" style={{ background: '#ff8fb1' }}>Funwalk</span>
             </div>
             <div className="art-post-body gradient-pastel">
               <span className="art-sparkle s1">✦</span>
               <span className="art-sparkle s2">✦</span>
-              <p className="art-headline-text" style={{ color: '#111' }}>SEHAT BERSAMA<br /><em>ROAD TO 25TH PCR</em></p>
+              <p className="art-headline-text" style={{ color: '#111' }}>{lang === 'id' ? 'SEHAT BERSAMA' : 'WALK TOGETHER'}<br /><em>ROAD TO 25TH PCR</em></p>
               <div className="art-bottle-mockup" style={{ fontSize: '13px' }}>
-                🏃‍♂️ Rute & Doorprize Menarik
+                🏃‍♂️ {lang === 'id' ? 'Rute & Doorprize Menarik' : 'Routes & Grand Prizes'}
               </div>
-              <div className="art-pill-btn" style={{ background: '#111', color: '#ff8fb1' }}>Lihat Informasi Rute →</div>
+              <div className="art-pill-btn" style={{ background: '#111', color: '#ff8fb1' }}>{lang === 'id' ? 'Lihat Info Rute →' : 'Route Info →'}</div>
             </div>
           </div>
         );
@@ -614,7 +814,7 @@ export default function App() {
                 <span>SCHOOL</span>
               </div>
               <div className="typog-details">
-                <p>Sosialisasi kampus, pengenalan jurusan Bisnis Digital, dan video dokumentasi interaktif.</p>
+                <p>{lang === 'id' ? 'Sosialisasi kampus, pengenalan jurusan Bisnis Digital, dan video dokumentasi interaktif.' : 'Campus outreach, Digital Business major showcase, and interactive media documentation.'}</p>
                 <div className="date-stamp">PCR GTS 2025 • PROMOSI</div>
               </div>
             </div>
@@ -630,25 +830,64 @@ export default function App() {
       {/* Navigasi Utama */}
       <nav className={`nav ${isNavOpen ? 'open' : ''}`} id="nav">
         <a className="logo" href="#hero">Hafiz<span>.</span></a>
-        <button 
-          className="menu-btn" 
-          onClick={() => setIsNavOpen(!isNavOpen)} 
-          aria-label="Buka menu navigasi" 
-          aria-expanded={isNavOpen}
-        >
-          <span></span><span></span><span></span>
-        </button>
+        
+        {/* Tombol Menu Mobile */}
+        <div className="nav-controls-mobile">
+          <div className="lang-switcher compact">
+            <button 
+              className={`lang-btn ${lang === 'id' ? 'active' : ''}`} 
+              onClick={() => setLang('id')}
+              aria-label="Bahasa Indonesia"
+            >
+              ID
+            </button>
+            <button 
+              className={`lang-btn ${lang === 'en' ? 'active' : ''}`} 
+              onClick={() => setLang('en')}
+              aria-label="English"
+            >
+              EN
+            </button>
+          </div>
+          <button 
+            className="menu-btn" 
+            onClick={() => setIsNavOpen(!isNavOpen)} 
+            aria-label="Buka menu navigasi" 
+            aria-expanded={isNavOpen}
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+
         <ul className="links">
-          <li><a href="#hero" onClick={() => setIsNavOpen(false)}>Beranda</a></li>
-          <li><a href="#work" onClick={() => setIsNavOpen(false)}>Karya Desain</a></li>
-          <li><a href="#about" onClick={() => setIsNavOpen(false)}>Tentang</a></li>
-          <li><a href="#process" onClick={() => setIsNavOpen(false)}>Alur Kerja</a></li>
-          <li><a href="#resume" onClick={() => setIsNavOpen(false)}>CV & Pengalaman</a></li>
+          <li><a href="#hero" onClick={() => setIsNavOpen(false)}>{cur.nav.home}</a></li>
+          <li><a href="#work" onClick={() => setIsNavOpen(false)}>{cur.nav.work}</a></li>
+          <li><a href="#about" onClick={() => setIsNavOpen(false)}>{cur.nav.about}</a></li>
+          <li><a href="#process" onClick={() => setIsNavOpen(false)}>{cur.nav.process}</a></li>
+          <li><a href="#resume" onClick={() => setIsNavOpen(false)}>{cur.nav.resume}</a></li>
           <li className="mobile-only">
-            <a className="talk" href="mailto:muhhafiz.rmdhn@gmail.com">Hubungi Saya</a>
+            <a className="talk" href="mailto:muhhafiz.rmdhn@gmail.com">{cur.nav.contact}</a>
           </li>
         </ul>
-        <a className="talk desktop-only" href="mailto:muhhafiz.rmdhn@gmail.com">Hubungi Saya</a>
+
+        <div className="nav-right desktop-only">
+          {/* Language Switcher Desktop */}
+          <div className="lang-switcher" role="group" aria-label="Pilih Bahasa / Language Selector">
+            <button 
+              className={`lang-btn ${lang === 'id' ? 'active' : ''}`} 
+              onClick={() => setLang('id')}
+            >
+              🇮🇩 ID
+            </button>
+            <button 
+              className={`lang-btn ${lang === 'en' ? 'active' : ''}`} 
+              onClick={() => setLang('en')}
+            >
+              🇬🇧 EN
+            </button>
+          </div>
+          <a className="talk" href="mailto:muhhafiz.rmdhn@gmail.com">{cur.nav.contact}</a>
+        </div>
       </nav>
 
       {/* 1. SEKSI HERO: Diorama Buku Pop-up Interaktif */}
@@ -656,33 +895,33 @@ export default function App() {
         <main className="hero">
           <section className="side left">
             <div className="hero-badge fade" style={{ "--d": ".2s" }}>
-              <span className="badge-icon">🎓</span> Mahasiswa Bisnis Digital • Politeknik Caltex Riau
+              <span className="badge-icon">🎓</span> {cur.hero.badge}
             </div>
             <h1 className="headline">
-              <span className="line"><span style={{ "--i": 0 }}>Visual kreatif,</span></span>
-              <span className="line"><span style={{ "--i": 1 }}>strategi <em>digital.</em></span></span>
+              <span className="line"><span style={{ "--i": 0 }}>{cur.hero.h1_line1}</span></span>
+              <span className="line"><span style={{ "--i": 1 }}>{cur.hero.h1_line2} <em>{cur.hero.h1_em}</em></span></span>
             </h1>
             <p className="lede fade" style={{ "--d": ".6s" }}>
-              Halo! Saya <strong>Muhammad Hafiz Ramadhan</strong>, mahasiswa Bisnis Digital PCR yang berfokus di bidang <strong>komunikasi visual, publikasi event, dan desain kreatif</strong>. Terampil merancang kebutuhan grafis media sosial, identitas logo, poster acara, serta pengembangan platform web pemasaran.
+              {cur.hero.lede}
             </p>
             <div className="actions fade" style={{ "--d": ".75s" }}>
-              <a className="btn dark" href="#work">Lihat Hasil Desain <span aria-hidden="true">→</span></a>
-              <a className="btn paper" href="#resume">Lihat CV & Pengalaman</a>
+              <a className="btn dark" href="#work">{cur.hero.btn_work} <span aria-hidden="true">→</span></a>
+              <a className="btn paper" href="#resume">{cur.hero.btn_resume}</a>
             </div>
             <div className="hero-stats fade" style={{ "--d": ".85s" }}>
               <div className="stat-item">
                 <strong>8+</strong>
-                <span>Event & Kepanitiaan</span>
+                <span>{cur.hero.stat_events}</span>
               </div>
               <div className="stat-divider"></div>
               <div className="stat-item">
                 <strong>3.59</strong>
-                <span>IPK (Cumlaude)</span>
+                <span>{cur.hero.stat_gpa}</span>
               </div>
               <div className="stat-divider"></div>
               <div className="stat-item">
                 <strong>100%</strong>
-                <span>Publikasi Kreatif</span>
+                <span>{cur.hero.stat_dedication}</span>
               </div>
             </div>
           </section>
@@ -726,24 +965,24 @@ export default function App() {
           <section className="side right">
             <ol className="cards">
               <li className="fade" style={{ "--d": ".45s", "--r": "-1.5deg", "--c": "var(--sky)" }} data-n="01">
-                <b>Desain Feed & Publikasi</b>
-                <span>Konten media sosial interaktif, feed Instagram, dan infografis event kampus & kompetisi.</span>
+                <b>{cur.hero.card1_title}</b>
+                <span>{cur.hero.card1_desc}</span>
               </li>
               <li className="fade" style={{ "--d": ".55s", "--r": "1.2deg", "--c": "var(--flame)" }} data-n="02">
-                <b>Desain Logo & Identitas</b>
-                <span>Simbol kepanitiaan, identitas visual INNOBIZ, Series BEM, dan branding digital bisnis.</span>
+                <b>{cur.hero.card2_title}</b>
+                <span>{cur.hero.card2_desc}</span>
               </li>
               <li className="fade" style={{ "--d": ".65s", "--r": "-.8deg", "--c": "var(--lime)" }} data-n="03">
-                <b>Desain Poster & Cetak</b>
-                <span>Materi promosi cetak A2/A3, publikasi BK Fair tingkat provinsi, banner jalan santai PCR.</span>
+                <b>{cur.hero.card3_title}</b>
+                <span>{cur.hero.card3_desc}</span>
               </li>
               <li className="fade" style={{ "--d": ".75s", "--r": "1deg", "--c": "#fff" }} data-n="04">
-                <b>UI/UX & Web Bisnis</b>
-                <span>Dasar pemrograman web, layout antarmuka pemasaran digital, dan riset pengguna.</span>
+                <b>{cur.hero.card4_title}</b>
+                <span>{cur.hero.card4_desc}</span>
               </li>
             </ol>
             <p className="status fade" style={{ "--d": ".9s" }}>
-              <i className="dot"></i>Terbuka untuk kolaborasi event, desain & freelance
+              <i className="dot"></i>{cur.hero.status}
             </p>
           </section>
         </main>
@@ -752,11 +991,9 @@ export default function App() {
       {/* 2. SEKSI WORK: Galeri Hasil Desain (Postingan, Logo, Poster) */}
       <section className="section-container" id="work">
         <div className="section-header">
-          <span className="section-pill">Portofolio Desain</span>
-          <h2 className="section-title">Hasil Desain & Publikasi Pilihan</h2>
-          <p className="section-subtitle">
-            Karya desain grafis publikasi event tingkat kampus hingga provinsi, mencakup postingan media sosial, identitas logo kepanitiaan, serta poster cetak promosi.
-          </p>
+          <span className="section-pill">{cur.work.pill}</span>
+          <h2 className="section-title">{cur.work.title}</h2>
+          <p className="section-subtitle">{cur.work.subtitle}</p>
 
           {/* Filter Tab Kategori */}
           <div className="filter-tabs">
@@ -764,25 +1001,25 @@ export default function App() {
               className={`filter-btn ${activeTab === 'all' ? 'active' : ''}`}
               onClick={() => setActiveTab('all')}
             >
-              Semua Karya ({designProjects.length})
+              {cur.work.tab_all} ({designProjects.length})
             </button>
             <button 
               className={`filter-btn ${activeTab === 'postingan' ? 'active' : ''}`}
               onClick={() => setActiveTab('postingan')}
             >
-              📱 Desain Postingan
+              {cur.work.tab_postingan}
             </button>
             <button 
               className={`filter-btn ${activeTab === 'logo' ? 'active' : ''}`}
               onClick={() => setActiveTab('logo')}
             >
-              ✨ Desain Logo
+              {cur.work.tab_logo}
             </button>
             <button 
               className={`filter-btn ${activeTab === 'poster' ? 'active' : ''}`}
               onClick={() => setActiveTab('poster')}
             >
-              🖼️ Desain Poster
+              {cur.work.tab_poster}
             </button>
           </div>
         </div>
@@ -798,7 +1035,7 @@ export default function App() {
               <div className="project-preview-wrapper">
                 {renderDesignPreview(project.previewType)}
                 <div className="preview-overlay">
-                  <span className="overlay-btn">Lihat Detail Desain 🔍</span>
+                  <span className="overlay-btn">{cur.work.view_detail}</span>
                 </div>
               </div>
               <div className="project-info">
@@ -825,14 +1062,14 @@ export default function App() {
       <section className="section-container" id="about">
         <div className="about-wrapper">
           <div className="about-graphic-card">
-            <div className="paper-sticker sticker-1">HAFIZ 🎓</div>
-            <div className="paper-sticker sticker-2">BISNIS DIGITAL PCR</div>
+            <div className="paper-sticker sticker-1">{cur.about.sticker1}</div>
+            <div className="paper-sticker sticker-2">{cur.about.sticker2}</div>
             <div className="about-portrait-box">
               <div className="portrait-circle">
                 <span className="portrait-icon">👨‍💻</span>
               </div>
               <h3 className="about-name">Muhammad Hafiz Ramadhan</h3>
-              <p className="about-role">Publikasi, Dokumentasi & Visual Designer</p>
+              <p className="about-role">{cur.about.role}</p>
               <div className="about-skills-chips">
                 <span>UI/UX & Graphic Design</span>
                 <span>Social Media Management</span>
@@ -842,8 +1079,8 @@ export default function App() {
             </div>
             <div className="about-contact-quick">
               <div className="contact-row">
-                <span>📍 Lokasi:</span>
-                <strong>Pekanbaru, Riau (Politeknik Caltex Riau)</strong>
+                <span>📍 {cur.about.loc_label}</span>
+                <strong>{cur.about.loc_val}</strong>
               </div>
               <div className="contact-row">
                 <span>📧 Email:</span>
@@ -857,35 +1094,31 @@ export default function App() {
           </div>
 
           <div className="about-text-content">
-            <span className="section-pill">Profil Singkat</span>
-            <h2 className="section-title text-left">Komunikasi Visual & Pemasaran Digital</h2>
-            <p className="about-body-text">
-              Saya adalah mahasiswa aktif <strong>D4 Bisnis Digital di Politeknik Caltex Riau (PCR)</strong> dengan Indeks Prestasi Kumulatif <strong>3.59 (Cumlaude)</strong>. Memiliki minat tinggi di bidang komunikasi visual, publikasi media, serta teknologi digital.
-            </p>
-            <p className="about-body-text">
-              Berpengalaman aktif sebagai staf <strong>publikasi & dokumentasi</strong> di berbagai kepanitiaan event tingkat Program Studi, Kampus PCR, hingga tingkat Provinsi. Terampil mengoperasikan tools desain grafis, editing foto & video, serta memiliki fondasi dalam pengembangan platform web pemasaran modern.
-            </p>
+            <span className="section-pill">{cur.about.pill}</span>
+            <h2 className="section-title text-left">{cur.about.title}</h2>
+            <p className="about-body-text">{cur.about.p1}</p>
+            <p className="about-body-text">{cur.about.p2}</p>
 
             <div className="values-grid">
               <div className="value-card">
                 <span className="value-num">01</span>
-                <h4>Publikasi & Dokumentasi Event</h4>
-                <p>Berpengalaman di 8+ kepanitiaan besar (BK Fair Provinsi, Edufestia 25th PCR, Funwalk, Innobiz, dll).</p>
+                <h4>{cur.about.val1_title}</h4>
+                <p>{cur.about.val1_desc}</p>
               </div>
               <div className="value-card">
                 <span className="value-num">02</span>
-                <h4>UI/UX & Desain Grafis</h4>
-                <p>Menguasai prinsip desain antarmuka pengguna, tipografi, grid system, dan visual branding yang terarah.</p>
+                <h4>{cur.about.val2_title}</h4>
+                <p>{cur.about.val2_desc}</p>
               </div>
               <div className="value-card">
                 <span className="value-num">03</span>
-                <h4>Video & Photo Editing</h4>
-                <p>Mendokumentasikan momen penting acara, video promosi PCR Goes to School (GTS), serta reels medsos.</p>
+                <h4>{cur.about.val3_title}</h4>
+                <p>{cur.about.val3_desc}</p>
               </div>
               <div className="value-card">
                 <span className="value-num">04</span>
-                <h4>Pemasaran & Web Basics</h4>
-                <p>Mengkombinasikan pemahaman bisnis digital, manajemen pemasaran, dan dasar pemrograman web.</p>
+                <h4>{cur.about.val4_title}</h4>
+                <p>{cur.about.val4_desc}</p>
               </div>
             </div>
           </div>
@@ -895,15 +1128,13 @@ export default function App() {
       {/* 4. SEKSI PROCESS: Alur Kerja Desain & Publikasi */}
       <section className="section-container" id="process">
         <div className="section-header">
-          <span className="section-pill">Alur Kerja</span>
-          <h2 className="section-title">Bagaimana Desain & Publikasi Dipersiapkan</h2>
-          <p className="section-subtitle">
-            Pendekatan kerja sistematis dari riset kebutuhan kepanitiaan hingga distribusi konten visual siap tayang.
-          </p>
+          <span className="section-pill">{cur.process.pill}</span>
+          <h2 className="section-title">{cur.process.title}</h2>
+          <p className="section-subtitle">{cur.process.subtitle}</p>
         </div>
 
         <div className="process-grid">
-          {workflowSteps.map((ws, i) => (
+          {cur.process.steps.map((ws, i) => (
             <div key={i} className="process-card">
               <div className="process-card-header">
                 <span className="process-num">{ws.step}</span>
@@ -922,8 +1153,8 @@ export default function App() {
         <div className="resume-grid">
           {/* Kolom Kiri: Riwayat Kepanitiaan & Event */}
           <div className="resume-col">
-            <span className="section-pill">Riwayat Kepanitiaan</span>
-            <h2 className="section-title text-left">Pengalaman Publikasi & Dokumentasi</h2>
+            <span className="section-pill">{cur.resume.pill_exp}</span>
+            <h2 className="section-title text-left">{cur.resume.title_exp}</h2>
             <div className="timeline">
               {experienceData.map((exp, idx) => (
                 <div key={idx} className="timeline-item">
@@ -941,15 +1172,15 @@ export default function App() {
 
           {/* Kolom Kanan: Pendidikan & Kemampuan Berdasarkan CV */}
           <div className="resume-col">
-            <span className="section-pill">Latar Belakang Akademik</span>
-            <h2 className="section-title text-left">Pendidikan & Transkrip</h2>
+            <span className="section-pill">{cur.resume.pill_edu}</span>
+            <h2 className="section-title text-left">{cur.resume.title_edu}</h2>
             
             {/* Box Pendidikan */}
             <div className="edu-box">
-              <div className="edu-badge">2024 — 2028</div>
+              <div className="edu-badge">{educationData.period}</div>
               <h3 className="edu-school">{educationData.institution}</h3>
               <h4 className="edu-major">{educationData.major}</h4>
-              <p className="edu-gpa">Indeks Prestasi Kumulatif: <strong>{educationData.gpa}</strong></p>
+              <p className="edu-gpa">{cur.resume.gpa_label} <strong>{educationData.gpa}</strong></p>
               <div className="edu-tags">
                 {educationData.highlights.map((h, i) => (
                   <span key={i} className="mini-tag">✓ {h}</span>
@@ -957,8 +1188,8 @@ export default function App() {
               </div>
             </div>
 
-            <span className="section-pill" style={{ marginTop: '32px' }}>Kemampuan & Keahlian</span>
-            <h2 className="section-title text-left">Skills & Kompetensi</h2>
+            <span className="section-pill" style={{ marginTop: '32px' }}>{cur.resume.pill_skill}</span>
+            <h2 className="section-title text-left">{cur.resume.title_skill}</h2>
             <div className="skills-toolkit">
               <div className="skill-group">
                 <div className="skill-label-row">
@@ -994,8 +1225,8 @@ export default function App() {
 
               <div className="skill-group">
                 <div className="skill-label-row">
-                  <span>Kemampuan Bahasa: Indonesia (Native) & English (Medium)</span>
-                  <strong>Aktif</strong>
+                  <span>{cur.resume.lang_skill}</span>
+                  <strong>{cur.resume.active_badge}</strong>
                 </div>
                 <div className="skill-bar"><div className="skill-fill" style={{ width: '88%', background: 'var(--flame)' }}></div></div>
               </div>
@@ -1003,11 +1234,11 @@ export default function App() {
 
             {/* Kotak Kontak CV */}
             <div className="cta-box">
-              <h3>Mari Berkolaborasi!</h3>
-              <p>Butuh desain postingan promosi, kebutuhan publikasi event, logo acara, atau poster berkualitas?</p>
+              <h3>{cur.resume.cta_title}</h3>
+              <p>{cur.resume.cta_desc}</p>
               <div className="cta-actions">
-                <a className="btn dark" href="mailto:muhhafiz.rmdhn@gmail.com">Kirim Email Langsung →</a>
-                <a className="btn paper" href="https://wa.me/6287812163800" target="_blank" rel="noreferrer">WhatsApp: +62 878-1216-3800</a>
+                <a className="btn dark" href="mailto:muhhafiz.rmdhn@gmail.com">{cur.resume.btn_email}</a>
+                <a className="btn paper" href="https://wa.me/6287812163800" target="_blank" rel="noreferrer">{cur.resume.btn_wa}</a>
               </div>
             </div>
           </div>
@@ -1025,7 +1256,7 @@ export default function App() {
             <div className="modal-details">
               <span className="category-badge">{selectedDesign.tag}</span>
               <h2 className="modal-title">{selectedDesign.title}</h2>
-              <p className="modal-client"><strong>Kepanitiaan / Acara:</strong> {selectedDesign.client}</p>
+              <p className="modal-client"><strong>{cur.work.client_label}</strong> {selectedDesign.client}</p>
               <p className="modal-desc">{selectedDesign.desc}</p>
               <div className="modal-tags">
                 {selectedDesign.tags.map((t, i) => (
@@ -1034,7 +1265,7 @@ export default function App() {
               </div>
               <div className="modal-action-row">
                 <a className="btn dark" href="mailto:muhhafiz.rmdhn@gmail.com?subject=Tanya Kebutuhan Desain / Event">
-                  Hubungi Hafiz untuk Kebutuhan Desain →
+                  {cur.work.consult_btn}
                 </a>
               </div>
             </div>
@@ -1047,17 +1278,17 @@ export default function App() {
         <div className="footer-content">
           <div className="footer-left">
             <span className="logo">Hafiz<span>.</span></span>
-            <p>Muhammad Hafiz Ramadhan • Mahasiswa Bisnis Digital Politeknik Caltex Riau. Menggabungkan estetika visual, publikasi event, dan strategi pemasaran digital.</p>
+            <p>{cur.footer.desc}</p>
           </div>
           <div className="footer-links">
-            <a href="#hero">Beranda</a>
-            <a href="#work">Karya Desain</a>
-            <a href="#about">Tentang</a>
-            <a href="#process">Alur Kerja</a>
-            <a href="#resume">CV & Pengalaman</a>
+            <a href="#hero">{cur.nav.home}</a>
+            <a href="#work">{cur.nav.work}</a>
+            <a href="#about">{cur.nav.about}</a>
+            <a href="#process">{cur.nav.process}</a>
+            <a href="#resume">{cur.nav.resume}</a>
           </div>
           <div className="footer-copy">
-            <p>© {new Date().getFullYear()} Muhammad Hafiz Ramadhan. Dibuat dengan bangga.</p>
+            <p>{cur.footer.copy}</p>
           </div>
         </div>
       </footer>
